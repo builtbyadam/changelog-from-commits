@@ -1,0 +1,62 @@
+name: "changelog-from-commits"
+description: "Generate a changelog from conventional commits and open a pull request that prepends it to a changelog file."
+author: "amoussa1229"
+branding:
+  icon: "file-text"
+  color: "purple"
+
+inputs:
+  from-ref:
+    description: >-
+      Start of the commit range (exclusive). When empty, the latest tag is used
+      (git describe --tags --abbrev=0), falling back to the repository root
+      commit when there are no tags.
+    required: false
+    default: ""
+  to-ref:
+    description: "End of the commit range (inclusive)."
+    required: false
+    default: "HEAD"
+  output-file:
+    description: "Path (relative to working-directory) of the changelog file to create or prepend to."
+    required: false
+    default: "CHANGELOG.md"
+  open-pr:
+    description: >-
+      "true" to open a pull request with the updated changelog, "false" to only
+      write the file locally. Requires github-token when "true".
+    required: false
+    default: "true"
+  branch-name:
+    description: >-
+      Name of the branch to create for the pull request. "{run}" is replaced by
+      GITHUB_RUN_ID (or "local"). If the branch already exists, a short suffix
+      is appended.
+    required: false
+    default: "changelog/update-{run}"
+  commit-types:
+    description: >-
+      JSON object mapping conventional-commit type to its changelog section
+      heading. Types not listed are ignored.
+    required: false
+    default: '{"feat":"Features","fix":"Bug Fixes","perf":"Performance","refactor":"Refactoring","docs":"Documentation","chore":"Chores"}'
+  working-directory:
+    description: "Directory to run git in and resolve output-file against."
+    required: false
+    default: "."
+  github-token:
+    description: "Token used to open the pull request when open-pr is true."
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  entries-count:
+    description: "Number of conforming conventional commits included in the changelog section."
+  pr-url:
+    description: 'URL of the opened pull request, or "" when no PR was opened.'
+  changelog:
+    description: "The rendered new changelog section (markdown)."
+
+runs:
+  using: "node24"
+  main: "dist/index.js"

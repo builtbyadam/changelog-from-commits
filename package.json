@@ -1,0 +1,30 @@
+{
+  "name": "changelog-from-commits",
+  "version": "1.0.0",
+  "description": "GitHub Action that generates a changelog from conventional commits and opens a pull request prepending it to a changelog file.",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --test",
+    "build": "ncc build src/index.js -o dist"
+  },
+  "keywords": [
+    "github-actions",
+    "changelog",
+    "conventional-commits",
+    "ci"
+  ],
+  "author": "amoussa1229",
+  "license": "MIT",
+  "type": "commonjs",
+  "overrides": {
+    "undici": "^6.26.0"
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.4"
+  }
+}
